@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - InnovateGuide{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/project_details.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Project Details Display -->
+    <main class="section project-details-container">
+        <div class="container">
+            <!-- Header Section -->
+            <div class="project-header">
+                <nav class="breadcrumb">
+                    <a href="{{ url_for('index') }}">Marketplace</a> >
+                    <a href="{{ url_for('browse_all_projects') }}">{{ project.technology[0] if project.technology else 'Category' }}</a> >
+                    <span>{{ project.title }}</span>
+                </nav>
+                <h1>{{ project.title }}</h1>
+                <div class="project-meta-line">
+                    <span class="meta-category">{{ project.technology[0] if project.technology else 'Web Development' }}</span> •
+                    <span class="meta-difficulty difficulty-badge {{ project.difficulty|lower }}">{{ project.difficulty }}</span> •
+                    <span class="meta-price">₹{{ project.price }}</span>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span>{{ project.rating }}</span>
+                    </div>
+                    <span class="popular-badge">Popular</span>
+                </div>
+            </div>
+
+            <div class="project-layout">
+                <!-- Left Column - Main Content -->
+                <div class="left-column">
+                    <!-- Project Preview Section -->
+                    <div class="project-preview">
+                        <div class="main-preview-image">
+                            <img src="{{ project.image }}" alt="{{ project.title }}">
+                        </div>
+                        <div class="thumbnail-strip">
+                            <!-- Placeholder thumbnails -->
+                            <img src="{{ project.image }}" alt="Thumb 1" class="thumbnail active">
+                            <img src="{{ project.image }}" alt="Thumb 2" class="thumbnail">
+                            <img src="{{ project.image }}" alt="Thumb 3" class="thumbnail">
+                        </div>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div class="content-section">
+                        <h2>Description</h2>
+                        <p>{{ project.description }}</p>
+                    </div>
+
+                    <!-- Technologies / Tags -->
+                    <div class="content-section">
+                        <h3>Technologies Used</h3>
+                        <div class="tech-tags">
+                            {% for tech in project.technology %}
+                            <span class="tech-chip">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Demo & Resources Section -->
+                    <div class="content-section">
+                        <h3>Demo & Resources</h3>
+                        <div class="resource-links">
+                            <a href="#" class="resource-link demo-link">
+                                <i class="fas fa-play-circle"></i>
+                                View Demo Video
+                            </a>
+                            <a href="#" class="resource-link download-link">
+                                <i class="fas fa-download"></i>
+                                Download Project Files
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Sticky Purchase Card -->
+                <div class="right-column">
+                    <div class="purchase-card">
+                        <div class="price-display">
+                            <span class="price">₹{{ project.price }}</span>
+                        </div>
+                        <button class="btn-primary buy-now-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Buy Now
+                        </button>
+                        <button class="btn-secondary wishlist-btn">
+                            <i class="far fa-heart"></i>
+                            Add to Wishlist
+                        </button>
+                        <button class="btn-secondary share-btn">
+                            <i class="fas fa-share"></i>
+                            Share
+                        </button>
+
+                        <div class="project-info-list">
+                            <div class="info-item">
+                                <span class="info-label">Category</span>
+                                <span class="info-value">{{ project.technology[0] if project.technology else 'Web Development' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Project Type</span>
+                                <span class="info-value">Major Project</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Domain</span>
+                                <span class="info-value">{{ project.technology[0] if project.technology else 'Web Development' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Difficulty Level</span>
+                                <span class="info-value difficulty-badge {{ project.difficulty|lower }}">{{ project.difficulty }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Developer Info Card -->
+                        <div class="developer-card">
+                            <h4>Developer Information</h4>
+                            <div class="developer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="developer-details">
+                                <div class="developer-name">{{ project.seller }}</div>
+                                <div class="developer-college">ABC University</div>
+                                <div class="developer-course">Computer Science & Engineering</div>
+                                <div class="developer-year">3rd Year</div>
+                                <div class="developer-badge verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    Verified Contributor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="share-modal">
+        <div class="share-modal-overlay"></div>
+        <div class="share-modal-content">
+            <div class="share-modal-header">
+                <h3>Share this project</h3>
+                <button class="share-modal-close" aria-label="Close share modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="share-modal-body">
+                <div class="share-option" data-action="copy">
+                    <i class="fas fa-link"></i>
+                    <span>Copy link</span>
+                </div>
+                <div class="share-option" data-action="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-option" data-action="twitter">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter (X)</span>
+                </div>
+                <div class="share-option" data-action="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="share-option" data-action="linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                    <span>LinkedIn</span>
+                </div>
+                <div class="share-option" data-action="email">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </div>
+            </div>
+            <div id="copy-feedback" class="copy-feedback">Link copied</div>
+        </div>
+    </div>
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const shareBtn = document.querySelector('.share-btn');
+    const shareModal = document.getElementById('share-modal');
+    const shareModalOverlay = document.querySelector('.share-modal-overlay');
+    const shareModalClose = document.querySelector('.share-modal-close');
+    const shareOptions = document.querySelectorAll('.share-option');
+    const copyFeedback = document.getElementById('copy-feedback');
+
+    // Open modal
+    shareBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        shareModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Close modal functions
+    function closeModal() {
+        shareModal.classList.remove('show');
+        document.body.style.overflow = '';
+        copyFeedback.classList.remove('show');
+    }
+
+    // Close on overlay click
+    shareModalOverlay.addEventListener('click', closeModal);
+
+    // Close on close button click
+    shareModalClose.addEventListener('click', closeModal);
+
+    // Handle share options
+    shareOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const action = this.dataset.action;
+            const url = window.location.href;
+            const title = document.title;
+
+            switch(action) {
+                case 'copy':
+                    navigator.clipboard.writeText(url).then(() => {
+                        copyFeedback.classList.add('show');
+                        setTimeout(() => {
+                            copyFeedback.classList.remove('show');
+                        }, 2000);
+                    });
+                    break;
+                case 'whatsapp':
+                    window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+                    break;
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
+                    break;
+                case 'facebook':
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                    break;
+                case 'linkedin':
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                    break;
+                case 'email':
+                    window.open(`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`, '_blank');
+                    break;
+            }
+
+            // Close modal after action (except copy)
+            if (action !== 'copy') {
+                closeModal();
+            }
+        });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && shareModal.classList.contains('show')) {
+            closeModal();
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% endblock %}
